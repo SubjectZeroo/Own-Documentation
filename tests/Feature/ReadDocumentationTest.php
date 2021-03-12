@@ -19,6 +19,13 @@ class ReadDocumentationTest extends TestCase
         $this->get('docs/some-page')->assertRedirect('docs/'.DEFAULT_VERSION.'/some-page');
     }
 
+    public function it_aborts_if_the_requested_documentation_version()
+    {
+
+        $this->get('docs/'.DEFAULT_VERSION.'/does-not-exist')->assertNotFound();
+
+    }
+
    /** @test */
    public function it_loads_and_parses_a_markdown_documentation_page()
    {

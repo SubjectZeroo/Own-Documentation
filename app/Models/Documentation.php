@@ -22,7 +22,7 @@ class Documentation extends Model
         // dd($this->markdownPath($version, $page));
         if(File::exists($page = $this->markdownPath($version, $page))) {
 
-            return (new Parsedown)->text(File::get($page));
+            return $this->replaceLinks($version, (new Parsedown)->text(File::get($page)));
 
         }
         throw new Exception('The requested documentation page was not found');
@@ -33,5 +33,15 @@ class Documentation extends Model
     {
 
       return  resource_path('docs/'.$version.'/'.$page.'.md');
+    }
+
+    public static function versions()
+    {
+        return [1.0, 1.1];
+    }
+
+    protected function replaceLinks($version, $content)
+    {
+        return str_replace('{{version}}', $version, $content);
     }
 }

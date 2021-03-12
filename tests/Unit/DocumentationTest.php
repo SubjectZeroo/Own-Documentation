@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\File;
+use App\Models\Documentation;
 
 class DocumentationTest extends TestCase
 {
@@ -18,11 +19,12 @@ class DocumentationTest extends TestCase
     public function it_gets_the_documentation_page_for_a_given_version()
     {
         File::shouldReceive('exists')->andReturn(true);
-        File::shouldReceive('get')->with(resource_path('docs/1.0/example.md'))->andReturn('# Example Page');
+        File::shouldReceive('get')->with(resource_path('docs/1.0/example.md'))->andReturn('# Example Page For {{version}}');
+
         $content = (new \App\Models\Documentation)->get('1.0', 'example');
 
 
-        $this->assertEquals('<h1>Example Page</h1>', $content);
+        $this->assertEquals('<h1>Example Page For 1.0</h1>', $content);
     }
 
 
